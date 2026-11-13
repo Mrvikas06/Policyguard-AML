@@ -253,30 +253,30 @@ router.post('/bulk-action', requireRole('analyst', 'senior_analyst', 'compliance
     const { threat_ids, action, assignee_id } = schema.parse(req.body);
     
     const placeholders = threat_ids.map(() => '?').join(',');
-    let updates = [];
-    let params = [...threat_ids];
+    const updates = [];
+    const updateParams = [];
     
     switch (action) {
       case 'assign':
         if (!assignee_id) return res.status(400).json({ error: 'Assignee required' });
         updates.push('assigned_to = ?', 'status = ?');
-        params.push(assignee_id, 'investigating');
+        updateParams.push(assignee_id, 'investigating');
         break;
       case 'resolve':
         updates.push('status = ?', 'resolved_at = ?');
-        params.push('resolved', Date.now());
+        updateParams.push('resolved', Date.now());
         break;
       case 'escalate':
         updates.push('status = ?');
-        params.push('investigating');
+        updateParams.push('investigating');
         break;
       case 'mark_false_positive':
         updates.push('status = ?');
-        params.push('false_positive');
+        updateParams.push('false_positive');
         break;
     }
     
-    db.prepare(`UPDATE threats SET ${updates.join(', ')} WHERE threat_id IN (${placeholders})`).run(...params);
+    db.prepare(`UPDATE threats SET ${updates.join(', ')} WHERE threat_id IN (${placeholders})`).run(...updateParams, ...threat_ids);
     
     res.json({ updated: threat_ids.length });
   } catch (e) {
