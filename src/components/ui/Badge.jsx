@@ -56,9 +56,6 @@ export function Badge({
   // Actually, for simplicity, we can just apply opacity or use a standard background class.
   // Since we accept arbitrary hex/vars, we'll use inline styles for the custom color part.
 
-  const isVar = badgeColor.startsWith("var(");
-  // Simple check for raw hex vs var to apply opacity
-  // In a real app we might predefine all badge classes, but here we keep the dynamic logic.
 
   return (
     <span

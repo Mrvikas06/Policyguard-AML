@@ -19,7 +19,7 @@ export function errorHandler(err, req, res, _next) {
   if (err.name === 'ZodError') {
     let errors = err.errors;
     if (!errors) {
-      try { errors = JSON.parse(err.message); } catch (e) { errors = []; }
+      try { errors = JSON.parse(err.message); } catch { errors = []; }
     }
     return res.status(400).json({
       error: 'Validation Error',
