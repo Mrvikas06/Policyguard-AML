@@ -19,7 +19,11 @@ const registerSchema = z.object({
   role: z.enum(['analyst', 'senior_analyst', 'compliance_lead', 'admin']).optional()
 });
 
-router.post('/login', strictRateLimiter(5, 15 * 60 * 1000), (req, res, next) => {
+const loginLimiter = process.env.NODE_ENV === 'production' 
+  ? strictRateLimiter(10, 15 * 60 * 1000) 
+  : strictRateLimiter(100, 60 * 1000);
+
+router.post('/login', loginLimiter, (req, res, next) => {
   try {
     const { email, password } = loginSchema.parse(req.body);
     
