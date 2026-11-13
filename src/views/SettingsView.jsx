@@ -82,7 +82,7 @@ export function SettingsView() {
                   fontWeight: activeTab === tab.id ? 600 : 500,
                   cursor: "pointer",
                   textAlign: "left",
-                  transition: `all ${C.fast}`,
+                  transition: "all 150ms ease",
                 }}
               >
                 <span style={{ fontSize: 18 }}>{tab.icon}</span>
