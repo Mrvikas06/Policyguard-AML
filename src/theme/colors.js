@@ -97,7 +97,7 @@ export const STATUS = {
   escalated:         { col: C.medium,   soft: C.mediumSoft,   lbl: "Escalated" },
   awaiting_review:   { col: C.accent,   soft: C.accentSoft,   lbl: "Awaiting Review" },
   resolved:          { col: C.resolved, soft: C.resolvedSoft, lbl: "Resolved" },
-  false_positive:    { col: C.textMuted, soft: "rgba(100,116,139,0.1)", lbl: "False Positive" },
+  false_positive:    { col: C.textMuted, soft: "rgba(255, 255, 255, 0.06)", lbl: "False Positive" },
   new:               { col: C.brand,    soft: C.brandSoft,    lbl: "New" },
 };
 

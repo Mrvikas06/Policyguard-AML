@@ -210,8 +210,8 @@ export function OverviewView({ openThreat, selectedPeriod, setSelectedPeriod, se
           <CardDescription>Interactive graph — click nodes to inspect connections</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="card graph-shell" style={{ padding: 16, minHeight: 360, background: "rgba(15, 23, 42, 0.3)", backdropFilter: "blur(12px)", border: "1px solid rgba(255, 255, 255, 0.05)" }}>
-            <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`, backgroundSize: "48px 48px", opacity: 0.8 }} />
+          <div className="card graph-shell" style={{ padding: 16, minHeight: 360, background: "rgba(18, 20, 24, 0.6)", backdropFilter: "blur(12px)", border: `1px solid ${C.border}` }}>
+            <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px)`, backgroundSize: "48px 48px", opacity: 0.6 }} />
             <div style={{ position: "relative", zIndex: 1 }}>
               <NetworkGraphPreview onExplain={() => {}} />
             </div>

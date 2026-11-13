@@ -175,7 +175,7 @@ export function AnalyticsChart({ title, values, tabValue, setTabValue, rangeValu
           </div>
         ))}
       </div>
-      <div className="card" style={{ border: `1px solid ${C.border}`, borderRadius: C.radiusLg, background: "rgba(9, 14, 26, 0.6)", backdropFilter: "blur(12px)", padding: 16 }}>
+      <div className="card" style={{ border: `1px solid ${C.border}`, borderRadius: C.radiusLg, background: "rgba(23, 26, 32, 0.75)", backdropFilter: "blur(12px)", padding: 16 }}>
         <svg viewBox={`0 0 ${w} ${h}`} style={{ width: "100%", height: "auto", display: "block" }}>
           <defs>
             <linearGradient id="analytics-fill" x1="0%" y1="0%" x2="0%" y2="100%">

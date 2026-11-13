@@ -73,24 +73,23 @@ export function Sidebar({ page, setPage, collapsed = false, setCollapsed, navGro
                       alignItems: "center",
                       gap: collapsed ? 0 : 12,
                       width: "100%",
-                      padding: collapsed ? "12px" : "11px 16px",
-                      borderRadius: "12px",
-                      background: active ? "rgba(59, 130, 246, 0.15)" : "transparent",
+                      padding: collapsed ? "10px" : "9px 14px",
+                      borderRadius: "8px",
+                      background: active ? "rgba(59, 130, 246, 0.12)" : "transparent",
                       color: active ? "var(--color-brand-light)" : "var(--color-text-dim)",
                       border: "1px solid",
-                      borderColor: active ? "rgba(59, 130, 246, 0.3)" : "transparent",
+                      borderColor: active ? "rgba(59, 130, 246, 0.25)" : "transparent",
                       cursor: "pointer",
-                      transition: "all 200ms ease",
+                      transition: "all 150ms ease",
                       justifyContent: collapsed ? "center" : "flex-start",
                       position: "relative",
                       overflow: "hidden",
-                      fontSize: 14,
+                      fontSize: 13.5,
                       fontWeight: active ? 600 : 500,
-                      boxShadow: active ? "0 0 10px rgba(59, 130, 246, 0.1)" : "none",
                     }}
                     onMouseOver={(e) => {
                       if (!active) {
-                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
+                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.04)";
                         e.currentTarget.style.color = "var(--color-text)";
                       }
                     }}
@@ -101,7 +100,7 @@ export function Sidebar({ page, setPage, collapsed = false, setCollapsed, navGro
                       }
                     }}
                   >
-                    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 22, height: 22, flexShrink: 0, color: active ? "var(--color-brand-light)" : "var(--color-text-dim)" }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 20, height: 20, flexShrink: 0, color: active ? "var(--color-brand-light)" : "var(--color-text-dim)" }}>
                       {Icon}
                     </span>
                     {!collapsed && (
@@ -110,7 +109,7 @@ export function Sidebar({ page, setPage, collapsed = false, setCollapsed, navGro
                       </span>
                     )}
                     {active && !collapsed && (
-                      <span style={{ position: "absolute", left: -1, top: 8, bottom: 8, width: 4, background: "var(--color-brand-light)", borderRadius: "0 4px 4px 0", boxShadow: "0 0 8px var(--color-brand-light)" }} />
+                      <span style={{ position: "absolute", left: 0, top: 6, bottom: 6, width: 3, background: "var(--color-brand)", borderRadius: "0 2px 2px 0" }} />
                     )}
                   </button>
                 );
@@ -131,8 +130,8 @@ export function Sidebar({ page, setPage, collapsed = false, setCollapsed, navGro
               background: "transparent", 
               border: "none",
               color: "var(--color-text-dim)",
-              padding: collapsed ? "12px" : "11px 16px",
-              borderRadius: "12px",
+              padding: collapsed ? "10px" : "9px 14px",
+              borderRadius: "8px",
               cursor: "pointer",
               transition: "all 200ms ease",
               justifyContent: collapsed ? "center" : "flex-start", gap: collapsed ? 0 : 12 
