@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 .agents/*
 *.db-shm
-*.db-wal
+*.db-wal
+SKILL.md 
