@@ -24,6 +24,12 @@ function generateAccountNumber() {
 }
 
 let txnCounter = 0;
+try {
+  const row = db.prepare("SELECT MAX(CAST(SUBSTR(txn_id, 5) AS INTEGER)) as maxId FROM transactions").get();
+  if (row && row.maxId) txnCounter = row.maxId;
+} catch {
+  txnCounter = 0;
+}
 function generateTxnId() {
   txnCounter++;
   return 'TXN-' + String(100000 + txnCounter).slice(1);
@@ -60,7 +66,8 @@ for (const u of users) {
   insertUser.run(u.id, u.email, PASSWORD_HASH, u.name, u.role, now - randomInt(0, 365 * 24 * 60 * 60 * 1000));
 }
 
-console.log(`Seeded ${users.length} users`);
+const dbUsers = db.prepare('SELECT id, email, name, role FROM users').all();
+console.log(`Seeded ${dbUsers.length} users`);
 
 const insertAccount = db.prepare(`
   INSERT OR IGNORE INTO accounts (id, account_number, account_type, open_date, balance, country, risk_score, status)
@@ -93,7 +100,7 @@ const accountIds = dbAccounts.map(a => a.id);
 console.log(`DB has ${accountIds.length} accounts, using DB IDs for transactions`);
 
 const insertTransaction = db.prepare(`
-  INSERT INTO transactions (id, txn_id, from_account_id, to_account_id, amount, currency, payment_format, timestamp, is_laundering)
+  INSERT OR IGNORE INTO transactions (id, txn_id, from_account_id, to_account_id, amount, currency, payment_format, timestamp, is_laundering)
   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 
@@ -180,7 +187,9 @@ const insertThreat = db.prepare(`
   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 
-const launderingTxns = transactions.filter(t => t.is_laundering);
+const launderingTxns = transactions.filter(t => t.is_laundering).length > 0
+  ? transactions.filter(t => t.is_laundering)
+  : db.prepare('SELECT * FROM transactions WHERE is_laundering = 1 LIMIT 200').all();
 const threats = [];
 
 for (let i = 0; i < Math.min(200, launderingTxns.length); i++) {
@@ -194,7 +203,7 @@ for (let i = 0; i < Math.min(200, launderingTxns.length); i++) {
   const confidence = 0.75 + Math.random() * 0.24;
   const detectedAt = t.timestamp + randomInt(60000, 3600000);
   const resolvedAt = status === 'resolved' ? detectedAt + randomInt(3600000, 7 * 24 * 60 * 60 * 1000) : null;
-  const assignedTo = status !== 'open' ? randomChoice(users.filter(u => u.role !== 'admin')).id : null;
+  const assignedTo = status !== 'open' ? randomChoice(dbUsers.filter(u => u.role !== 'admin')).id : null;
   
   const evidence = generateEvidence(ruleId, t);
   const remediation = generateRemediation(ruleId, t);
@@ -243,7 +252,7 @@ const insertCase = db.prepare(`
 `);
 
 const caseStatuses = ['new', 'investigating', 'escalated', 'awaiting_review', 'resolved', 'false_positive'];
-const caseAnalysts = users.filter(u => u.role !== 'admin');
+const caseAnalysts = dbUsers.filter(u => u.role !== 'admin');
 
 for (let i = 0; i < 25; i++) {
   const id = randomUUID();
@@ -306,7 +315,7 @@ for (let i = 0; i < 12; i++) {
   const reportId = `RPT-${new Date(now - randomInt(0, 30 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0].replace(/-/g, '')}-${String(i + 1).padStart(3, '0')}`;
   const type = randomChoice(reportTypes);
   const status = randomChoice(['draft', 'generated', 'archived']);
-  const generatedBy = randomChoice(users.filter(u => u.role !== 'admin')).id;
+  const generatedBy = randomChoice(dbUsers.filter(u => u.role !== 'admin')).id;
   const content = JSON.stringify({ summary: `${type} generated for period ending ${new Date().toLocaleDateString()}`, threats_reviewed: randomInt(5, 50), sars_filed: randomInt(0, 10) });
   const filters = JSON.stringify({ date_range: '30d', severity: 'all', status: 'all' });
   
