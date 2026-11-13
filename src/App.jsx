@@ -5,17 +5,12 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-import { C, SEVER, STATUS, formatTime, formatDate } from "./theme/colors";
-import { Toast, ToastContainer } from "./components/ui/Toast";
+import { C, formatTime, formatDate } from "./theme/colors";
+import { ToastContainer } from "./components/ui/Toast";
 import { Button } from "./components/ui/Button";
-import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "./components/ui/Card";
+import { Card, CardContent } from "./components/ui/Card";
 import { Input } from "./components/ui/Input";
-import { Select } from "./components/ui/Select";
-import { Progress } from "./components/ui/Progress";
-import { Tabs } from "./components/ui/Tabs";
 import { Badge } from "./components/ui/Badge";
-import { Avatar } from "./components/ui/Avatar";
-import { Separator } from "./components/ui/Separator";
 
 // Layout components
 import { Sidebar } from "./components/layout/Sidebar";
@@ -66,64 +61,6 @@ const NAV_GROUPS = [
   ]},
 ];
 
-const QUICK_FILTERS = ["Today", "24 hours", "7 days", "30 days", "Custom"];
-
-function SectionHeading({ eyebrow, title, description, actions, children }) {
-  return (
-    <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, marginBottom: 20, flexWrap: "wrap" }}>
-      <div>
-        {eyebrow && <div style={{ color: C.brand, fontSize: 11.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>{eyebrow}</div>}
-        <h2 style={{ margin: 0, fontSize: 24, lineHeight: 1.15, letterSpacing: "-0.03em", color: C.text }}>{title}</h2>
-        {description && <p style={{ margin: "8px 0 0", color: C.textDim, fontSize: 13.5, lineHeight: 1.5, maxWidth: 760 }}>{description}</p>}
-      </div>
-      {(actions || children) && <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>{actions}{children}</div>}
-    </div>
-  );
-}
-
-function StatCard({ label, value, trend, period, spark, tone = C.brand, trendColor }) {
-  const deltaColor = trendColor || (trend?.startsWith("-") ? C.resolved : trend?.startsWith("+") ? C.critical : C.textDim);
-  const trendIcon = trend?.startsWith("-") ? "↓" : trend?.startsWith("+") ? "↑" : "→";
-
-  return (
-    <div className="card metric-card" style={{ padding: 0, overflow: "hidden", minHeight: 156 }}>
-      <div style={{ height: 4, background: tone }} />
-      <div style={{ padding: 20, display: "grid", gap: 14 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", gap: 12 }}>
-          <div style={{ minWidth: 0 }}>
-            <div style={{ color: C.textDim, fontSize: 11.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>{label}</div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginTop: 8, flexWrap: "wrap" }}>
-              <div style={{ color: C.text, fontSize: 32, fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1 }}>{value}</div>
-              {trend && (
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "4px 9px", borderRadius: C.radiusFull, background: `${deltaColor}1A`, color: deltaColor, border: `1px solid ${deltaColor}33`, fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}>
-                  {trendIcon}{trend}
-                </span>
-              )}
-            </div>
-            <div style={{ color: C.textDim, fontSize: 12, marginTop: 6 }}>{period}</div>
-          </div>
-          <div style={{ width: 100, alignSelf: "flex-start" }}>
-            <svg viewBox="0 0 100 32" style={{ width: "100%", height: "auto" }}>
-              {spark && spark.length > 1 && (
-                <>
-                  <polyline fill="none" stroke={tone} strokeWidth="2" points={spark.map((v, i) => `${(i / (spark.length - 1)) * 100},${32 - (v / Math.max(...spark)) * 28}`).join(" ")} strokeLinecap="round" strokeLinejoin="round" />
-                </>
-              )}
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StatGrid({ stats }) {
-  return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
-      {stats.map((s) => <StatCard key={s.label} {...s} />)}
-    </div>
-  );
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main App with Auth

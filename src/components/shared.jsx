@@ -3,7 +3,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { C, riskColor, riskLabel, formatNumber } from "../theme/colors";
-import { Button } from "./ui/Button";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "./ui/Card";
 import { Progress } from "./ui/Progress";
 import { Tabs } from "./ui/Tabs";

@@ -3,8 +3,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { C, cn } from "../../theme/colors";
-import { Badge } from "../ui/Badge";
-import { Separator } from "../ui/Separator";
 import { BrandMark } from "../ui/BrandMark";
 
 const ICONS = {
