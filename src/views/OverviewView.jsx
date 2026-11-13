@@ -10,6 +10,7 @@ import { Progress } from "../components/ui/Progress";
 import { Tabs } from "../components/ui/Tabs";
 import { Badge } from "../components/ui/Badge";
 import { StatGrid } from "../components/shared";
+import { api } from "../services/api";
 
 const QUICK_FILTERS = ["Today", "24 hours", "7 days", "30 days", "Custom"];
 
@@ -25,8 +26,8 @@ export function OverviewView({ openThreat, selectedPeriod, setSelectedPeriod, se
       setLoading(true);
       try {
         const [statsRes, threatsRes] = await Promise.all([
-          fetch("/api/stats/overview").then(r => r.json()),
-          fetch("/api/threats?limit=10&sort=detected_at&order=desc").then(r => r.json()),
+          api.stats.overview(),
+          api.threats.list({ limit: 10, sort: "detected_at", order: "desc" }),
         ]);
 
         setKpis([
