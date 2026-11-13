@@ -153,6 +153,7 @@ router.get('/:threatId', (req, res, next) => {
       SELECT 
         th.*, r.rule_id, r.category as rule_category, r.description as rule_description, r.basis as rule_basis,
         t.txn_id, t.amount, t.currency, t.payment_format, t.timestamp, t.is_laundering,
+        t.from_account_id, t.to_account_id,
         a1.account_number as from_account, a1.account_type as from_type, a1.balance as from_balance, a1.country as from_country, a1.risk_score as from_risk, a1.open_date as from_open_date,
         a2.account_number as to_account, a2.account_type as to_type, a2.balance as to_balance, a2.country as to_country, a2.risk_score as to_risk, a2.open_date as to_open_date,
         u.name as analyst_name, u.email as analyst_email
@@ -175,11 +176,11 @@ router.get('/:threatId', (req, res, next) => {
       FROM transactions t
       JOIN accounts a1 ON t.from_account_id = a1.id
       JOIN accounts a2 ON t.to_account_id = a2.id
-      WHERE (t.from_account_id = ? OR t.to_account_id = ? OR t.from_account_id = ? OR t.to_account_id = ?)
+      WHERE (t.from_account_id IN (?, ?) OR t.to_account_id IN (?, ?))
         AND t.id != ?
       ORDER BY ABS(t.timestamp - ?) ASC
       LIMIT 10
-    `).all(threat.from_account_id || threat.id, threat.from_account_id || threat.id, threat.to_account_id || threat.id, threat.to_account_id || threat.id, threat.transaction_id, threat.timestamp);
+    `).all(threat.from_account_id, threat.to_account_id, threat.from_account_id, threat.to_account_id, threat.transaction_id, threat.timestamp);
     
     res.json({ ...threat, related_transactions: relatedTxns });
   } catch (e) {
