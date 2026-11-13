@@ -14,7 +14,11 @@ const transactionQuerySchema = z.object({
   min_amount: z.coerce.number().optional(),
   max_amount: z.coerce.number().optional(),
   payment_format: z.string().optional(),
-  is_laundering: z.coerce.boolean().optional(),
+  is_laundering: z.preprocess((val) => {
+    if (val === '0' || val === 'false' || val === 0 || val === false) return false;
+    if (val === '1' || val === 'true' || val === 1 || val === true) return true;
+    return undefined;
+  }, z.boolean().optional()),
   country: z.string().optional(),
   date_from: z.coerce.number().optional(),
   date_to: z.coerce.number().optional(),
